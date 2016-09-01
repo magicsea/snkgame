@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/binary"
 	"log"
 
 	"github.com/funny/link"
@@ -21,7 +22,9 @@ func main() {
 	json.Register(AddReq{})
 	json.Register(AddRsp{})
 
-	client, err := link.Connect("tcp", "127.0.0.1:3200", json, 0)
+	flCodec := codec.FixLen(json, 2, binary.LittleEndian, 1024, 1024)
+
+	client, err := link.Connect("tcp", "127.0.0.1:3200", flCodec, 0)
 	checkErr(err)
 	clientLoop(client)
 }

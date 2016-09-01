@@ -2,10 +2,11 @@
 package main
 
 import (
+	"encoding/binary"
 	"log"
 
 	"github.com/funny/link"
-	"github.com/funny/link/codec"
+	codec "github.com/funny/link/codec"
 )
 
 type AddReq struct {
@@ -21,7 +22,9 @@ func main() {
 	json.Register(AddReq{})
 	json.Register(AddRsp{})
 
-	server, err := link.Serve("tcp", "127.0.0.1:3200", json, 0 /* sync send */)
+	flCodec := codec.FixLen(json, 2, binary.LittleEndian, 1024, 1024)
+
+	server, err := link.Serve("tcp", "127.0.0.1:3200", flCodec, 0 /* sync send */)
 	checkErr(err)
 	log.Printf("serverLoop... ")
 	serverLoop(server)
