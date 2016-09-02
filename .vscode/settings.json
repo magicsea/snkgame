@@ -22,7 +22,7 @@
    
     "go.goroot": null,
     
-    "go.gopath": null,
+    "go.gopath": ["C:\\gopath","c:\\project]"],
     
     "statusbar_command.commands":
     [{
